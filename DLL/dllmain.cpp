@@ -102,13 +102,20 @@ DWORD WINAPI doPatching(LPVOID lpParam)
 {
     //patch succeeded, wait a moment before applying stutter fix; the target class needs to have initialised.
     Sleep(5000);
-    
+#if _DEBUG
+    AllocConsole();
+    freopen("CONOUT$", "w", stdout);
+#endif
+
     int usrInputOffset = 0;
     int flagOffset = 0;
     auto baseAddr = GetModuleHandle(NULL);
+
+    printf("Baseaddr: 0x%x \n", baseAddr);
+
     if (Game == GAME::DS3) {
-        //for 1.15.1. TODO: support or at least recognise other patches
-        usrInputOffset = 0x49644C8;
+        //for 1.15.2 TODO: support or at least recognise other patches
+        usrInputOffset = 0x49644D0;
         flagOffset = 0x24b;
     }
     else if (Game == GAME::SEKIRO) {
@@ -127,24 +134,30 @@ DWORD WINAPI doPatching(LPVOID lpParam)
         MessageBoxA(0, "Stutter fix failed. You may be running an unsupported version.", "", 0);
         return 1;
     }
+    
+    uint8_t **usrInputPtr = (uint8_t**)((DWORD64)baseAddr + usrInputOffset);
+    printf("UserinputPtr, 0x%x\n", usrInputPtr);
 
-    auto usrInputPtr = (uint8_t**)((DWORD64)baseAddr + usrInputOffset);
     int i = 0;
     while ((DWORD64)*usrInputPtr < (DWORD64)baseAddr || (DWORD64)*usrInputPtr > 0x800000000000LL)
     {//less than base address is possible but is unlikely
         i++;
         if (i > 60)
         {
+            printf("Stutter fix failed. You may be running an unsupported version.\n");
             MessageBoxA(0, "Stutter fix failed. You may be running an unsupported version.", "", 0);
             return 1;
         }
         Sleep(500);
     }
     
-    auto ptrFlag = *usrInputPtr + flagOffset;
+    uint8_t *ptrFlag = (uint8_t*)((DWORD64)usrInputPtr + flagOffset); 
+    printf("ptrFlag %x \n", ptrFlag);
+    printf("*ptrFlag %d \n", *ptrFlag);
+    
     if (*ptrFlag == 0)
     {
-        *ptrFlag = 1;
+        *ptrFlag = 42; // It doesn't actually matter what this is, as long as it's not zero!
 
         if (Game == GAME::ELDENRING && std::filesystem::exists("mods/achievement"))
         {
@@ -155,12 +168,12 @@ DWORD WINAPI doPatching(LPVOID lpParam)
                 i++;
                 if (i > 60)
                 {
-                    MessageBoxA(0, "Achievement disable failed.", "", 0);
+                    //MessageBoxA(0, "Achievement disable failed.", "", 0);
                     return 1;
                 }
                 Sleep(500);
             }
-            auto ptrAchieve = (*(*trophyImpPtr + 1 /* +1 pointer ie. 8 bytes*/) + 0x4c);
+            auto ptrAchieve = (*(*trophyImpPtr + 1) + 0x4c);
             if (*ptrAchieve == 1)
             {
                 *ptrAchieve = 0;
@@ -173,10 +186,10 @@ DWORD WINAPI doPatching(LPVOID lpParam)
         }
 
         //Beep(2000, 250); //annoying AF
-#if _DEBUG
-        printf("Patch success, i %d\r\n", i);
-#endif
     }
+    
+    
+    printf("Patching done");
 
     return 0;
 }
@@ -192,7 +205,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
     case DLL_PROCESS_ATTACH:
         Game = DetermineGame();
         if (Game == GAME::UNKNOWN) {
-            MessageBoxA(0, "Unable to determine game. Valid EXEs are darksoulsiii.exe, sekiro.exe, elden_ring.exe and start_protected_game.exe", "", 0);
+            //MessageBoxA(0, "Unable to determine game. Valid EXEs are darksoulsiii.exe, sekiro.exe, elden_ring.exe and start_protected_game.exe", "", 0);
             break; //game will likely crash without the real dinput8 being loaded, but that's okay.
         }
 
@@ -201,7 +214,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
         res = CreateThread(NULL, 0, doPatching, NULL, 0, NULL);
         if (res == NULL)
         {
-            MessageBoxA(0, "Could not start patching thread.", "", 0);
+            //MessageBoxA(0, "Could not start patching thread.", "", 0);
         }
 
         break;
