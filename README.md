@@ -9,7 +9,7 @@ Supported patches:
 
 ## What's new?
 
-* I have updated the Dark Souls 3 pointers so it supports the latest patch and plan on keeping them updated into the future. I wanted to avoid the temptation of cheating with ERTool, so updated this instead.
+* I have updated the Dark Souls 3 pointers so it supports the latest patch (1.15.2) and plan on keeping them updated into the future (at least until my friend stops playing Dark Souls III)
 
 * I added a debug console, so I don't have to deal with messy message boxes
 ## Usage
