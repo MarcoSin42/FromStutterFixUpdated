@@ -180,16 +180,17 @@ DWORD WINAPI doPatching(LPVOID lpParam)
                 PlaySound(TEXT("SystemStart"), NULL, SND_SYNC);
 #if _DEBUG
                 MessageBoxA(0, "Achievement disable.", "", 0);
-                printf("Achievements disabled, %d\r\n", i);
 #endif
+                printf("Achievements disabled, %d\r\n", i);
             }
         }
 
         //Beep(2000, 250); //annoying AF
+    
     }
     
     
-    printf("Patching done");
+    printf("Patch success, i %d\n", i);
 
     return 0;
 }
