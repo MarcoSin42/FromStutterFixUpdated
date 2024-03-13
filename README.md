@@ -9,11 +9,9 @@ Supported patches:
 
 ## What's new?
 
-* I have updated the Elden Ring pointers so it supports the latest patch and plan on keeping them updated into the future. I wanted to avoid the temptation of cheating with ERTool, so updated this instead.
-* I still want to earn achievements so I've added an option to enable the achievement freeze fix. Enabling it is detailed below.
-* Made it easy to re-run the EXE without having to close it.
-* Removed the logos patch from the DLL cos I don't know how to find the pointers for that and there are safer solutions for that out there.
+* I have updated the Dark Souls 3 pointers so it supports the latest patch and plan on keeping them updated into the future. I wanted to avoid the temptation of cheating with ERTool, so updated this instead.
 
+* I added a debug console, so I don't have to deal with messy message boxes
 ## Usage
 
 There is a standalone .exe version which doesn't touch the game files, but needs to be run manually each time and there is also a .dll version which loads automatically. Both do the same thing.
@@ -64,6 +62,8 @@ Stutters at loading triggers probably can't be fixed, except by From, or a mirac
 
 ## Credit
 
-* Original program is by kh0nsu, I have not done much beside add some basic features and change some numbers.
-* I found the new pointers by debugging ERTool and just adding those to this program.
-* Alas, I do not know C++. ChatGPT helped me with figuring out how to detect the achievement file for the DLL version.
+* Original program is by kh0nsu and in turn I forked this off OsoaGH, I have not done much beside adding a debug console, added typing and changing the offset values for Dark Souls III.
+* I forked this off OsoaGH
+* OsoaGH found the new pointers by debugging ERTool and just adding those to this program.
+* I found the pointers by getting referred to the problematic code by a friend (Ike) who wanted me to make a patch for him, I don't play Dark Souls or any Souls-like game.
+  It involved doing some minor pointer chasing using Cheat Engine.  
