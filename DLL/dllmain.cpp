@@ -168,7 +168,7 @@ DWORD WINAPI doPatching(LPVOID lpParam)
                 i++;
                 if (i > 60)
                 {
-                    //MessageBoxA(0, "Achievement disable failed.", "", 0);
+                    MessageBoxA(0, "Achievement disable failed.", "", 0);
                     return 1;
                 }
                 Sleep(500);
