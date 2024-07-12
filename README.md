@@ -1,3 +1,5 @@
+[The project I forked this from has integrated my changes, credited me (thanks!), and provided a compiled binary here.](https://github.com/t0mtee/FromStutterFixUpdated)
+
 # FromStutterFixUpdated
 
 This tool will apply a fix for a certain type of stutter in FromSoft games. It can also disable achievements in Elden Ring, to work around a bug where achievements can freeze the game when Steam is offline.
